@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: cakeBakery
+
+frosting: chocolate
+syrup: chocolate
