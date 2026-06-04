@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: SpringBoot Web Tutorial
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: false
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    # Add ;AUTO_SERVER=TRUE at the end of the URL
+    url: jdbc:h2:file:/home/layz/Dev/CodingShuttle/Module2/EmployeeManagement/src/main/resources/db;AUTO_SERVER=TRUE
+    username: diwakar
+    password: diwakar
+
+logging:
+  level:
+    root: DEBUG  # Note: This will print A LOT of logs. Change to INFO later if it's too much.
