@@ -1,14 +1,16 @@
 package com.tutorial.employeeManagement.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Past;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -27,5 +29,7 @@ public class DepartmentEntity {
     @AssertTrue
     private boolean isActive;
 
-    private LocalDateTime createdAt;
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    @Past(message = "The date cannot be in future or present")
+    private LocalDate createdAt;
 }

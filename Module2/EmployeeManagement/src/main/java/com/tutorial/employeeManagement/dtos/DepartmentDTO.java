@@ -1,13 +1,12 @@
 package com.tutorial.employeeManagement.dtos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
 import lombok.*;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.Range;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -24,6 +23,7 @@ public class DepartmentDTO {
     @AssertTrue
     private boolean isActive;
 
+    @JsonFormat(pattern = "dd-MM-yyyy")
     @Past
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 }
