@@ -2,10 +2,15 @@ package com.tutorial.employeeManagement.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.tutorial.employeeManagement.annotations.CreditCardNumberPrimeValidator;
 import com.tutorial.employeeManagement.annotations.EmployeeRoleValidation;
+import com.tutorial.employeeManagement.annotations.PasswordValidator;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.hibernate.validator.constraints.CreditCardNumber;
+import org.hibernate.validator.constraints.Length;
 
+import java.math.BigInteger;
 import java.time.LocalDate;
 
 @Getter
@@ -49,4 +54,11 @@ public class EmployeeDTO {
     @AssertTrue(message = "Employee should be active")
     @JsonProperty("isActive")
     private Boolean isActive;
+
+//    @CreditCardNumber
+    @CreditCardNumberPrimeValidator
+    private BigInteger creditCardNumber;
+
+    @PasswordValidator
+    private String password;
 }

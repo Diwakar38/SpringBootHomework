@@ -2,14 +2,14 @@ package com.tutorial.employeeManagement.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.AssertTrue;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.URL;
 
+import java.math.BigInteger;
 import java.time.LocalDate;
 
 @Entity
@@ -23,13 +23,21 @@ public class DepartmentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     private String title;
 
-    @AssertTrue
     private boolean isActive;
 
-    @JsonFormat(pattern = "dd-MM-yyyy")
-    @Past(message = "The date cannot be in future or present")
     private LocalDate createdAt;
+
+    private Integer employeeCount;
+
+    private String websiteURL;
+
+    private String email;
+
+    private BigInteger budget;
+
+    private BigInteger revenue;
+
+    private BigInteger expenditure;
 }

@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigInteger;
 import java.time.LocalDate;
 
 @Entity
@@ -24,10 +25,10 @@ public class EmployeeEntity {
     private String name;
     private String email;
     private Integer age;
-    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateOfJoining;
-    @JsonProperty("isActive")
     private Boolean isActive;
     private String role;
     private Double salary;
+    private BigInteger creditCardNumber;
+    private String password;
 }
