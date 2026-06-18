@@ -20,3 +20,6 @@ spring:
 logging:
   level:
     root: DEBUG  # Note: This will print A LOT of logs. Change to INFO later if it's too much.
+
+server:
+  port: 8001

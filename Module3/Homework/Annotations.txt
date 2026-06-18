@@ -1,0 +1,9 @@
+@SpringBootTest
+@Test
+@Query
+@Transactional
+@JoinColumn
+@OneToMany
+@ManyToOne
+@OneToOne
+@ManyToMany

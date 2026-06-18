@@ -1,0 +1,39 @@
+package com.tutorial.prod_ready_features.controllers;
+
+import com.tutorial.prod_ready_features.dtos.PostDto;
+import com.tutorial.prod_ready_features.entities.PostEntity;
+import com.tutorial.prod_ready_features.services.PostService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/posts")
+@RequiredArgsConstructor
+public class PostController {
+    private final PostService postService;
+
+    @GetMapping
+    public ResponseEntity<List<PostDto>> getPosts() {
+        return ResponseEntity.ok(postService.getAllPosts());
+    }
+
+    @GetMapping("/{postId}")
+    public ResponseEntity<PostDto> getPostById(@PathVariable Long postId) {
+        return ResponseEntity.ok(postService.getPostById(postId));
+    }
+
+    @PostMapping
+    public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto) {
+        return ResponseEntity.ok(postService.createNewPost(postDto));
+    }
+
+    @PutMapping("/{postId}")
+    public ResponseEntity<PostDto> updatePost(
+            @PathVariable Long postId,
+            @RequestBody PostDto postDto) {
+        return ResponseEntity.ok(postService.upadatePost(postId,postDto));
+    }
+}
