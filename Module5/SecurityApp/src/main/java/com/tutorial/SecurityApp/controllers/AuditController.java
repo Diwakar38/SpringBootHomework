@@ -1,6 +1,6 @@
 package com.tutorial.SecurityApp.controllers;
 
-import com.tutorial.prod_ready_features.entities.PostEntity;
+import com.tutorial.SecurityApp.entities.PostEntity;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.envers.AuditReader;

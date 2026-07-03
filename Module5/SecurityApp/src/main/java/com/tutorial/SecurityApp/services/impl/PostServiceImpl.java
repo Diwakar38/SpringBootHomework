@@ -1,16 +1,20 @@
 package com.tutorial.SecurityApp.services.impl;
 
-import com.tutorial.prod_ready_features.dtos.PostDto;
-import com.tutorial.prod_ready_features.entities.PostEntity;
-import com.tutorial.prod_ready_features.exceptions.ResourceNotFoundException;
-import com.tutorial.prod_ready_features.repositories.PostRepository;
-import com.tutorial.prod_ready_features.services.PostService;
+import com.tutorial.SecurityApp.dtos.PostDto;
+import com.tutorial.SecurityApp.entities.PostEntity;
+import com.tutorial.SecurityApp.entities.UserEntity;
+import com.tutorial.SecurityApp.exceptions.ResourceNotFoundException;
+import com.tutorial.SecurityApp.repositories.PostRepository;
+import com.tutorial.SecurityApp.services.PostService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
@@ -35,6 +39,10 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDto getPostById(Long postId) {
+        UserEntity userEntity = (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        log.info("User: {}", userEntity);
+
         PostEntity postEntity = postRepository.findById(postId)
                 .orElseThrow(() -> new ResourceNotFoundException("Post with id " + postId + " was not found!"));
         return modelMapper.map(postEntity, PostDto.class);

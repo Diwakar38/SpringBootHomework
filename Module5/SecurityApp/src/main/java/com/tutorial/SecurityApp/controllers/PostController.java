@@ -1,7 +1,7 @@
 package com.tutorial.SecurityApp.controllers;
 
-import com.tutorial.prod_ready_features.dtos.PostDto;
-import com.tutorial.prod_ready_features.services.PostService;
+import com.tutorial.SecurityApp.dtos.PostDto;
+import com.tutorial.SecurityApp.services.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

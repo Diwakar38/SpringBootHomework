@@ -1,6 +1,6 @@
 package com.tutorial.SecurityApp.services;
 
-import com.tutorial.prod_ready_features.dtos.PostDto;
+import com.tutorial.SecurityApp.dtos.PostDto;
 
 import java.util.List;
 

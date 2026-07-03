@@ -1,6 +1,6 @@
 package com.tutorial.SecurityApp.clients;
 
-import com.tutorial.prod_ready_features.dtos.EmployeeDto;
+import com.tutorial.SecurityApp.dtos.EmployeeDto;
 
 import java.util.List;
 

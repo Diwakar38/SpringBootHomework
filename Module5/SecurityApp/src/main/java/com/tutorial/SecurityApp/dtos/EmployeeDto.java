@@ -2,6 +2,7 @@ package com.tutorial.SecurityApp.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.math.BigInteger;

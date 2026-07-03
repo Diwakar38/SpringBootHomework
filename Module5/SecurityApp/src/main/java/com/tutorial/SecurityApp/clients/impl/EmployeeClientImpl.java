@@ -1,9 +1,9 @@
 package com.tutorial.SecurityApp.clients.impl;
 
-import com.tutorial.prod_ready_features.advices.ApiResponse;
-import com.tutorial.prod_ready_features.clients.EmployeeClient;
-import com.tutorial.prod_ready_features.dtos.EmployeeDto;
-import com.tutorial.prod_ready_features.exceptions.ResourceNotFoundException;
+import com.tutorial.SecurityApp.advices.ApiResponse;
+import com.tutorial.SecurityApp.clients.EmployeeClient;
+import com.tutorial.SecurityApp.dtos.EmployeeDto;
+import com.tutorial.SecurityApp.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,14 +27,14 @@ public class EmployeeClientImpl implements EmployeeClient {
             ApiResponse<List<EmployeeDto>> employeeDtoList = restClient.get()
                     .uri("/employees")
                     .retrieve()
-                    .onStatus(HttpStatusCode::is4xxClientError, ((request, response) ->{
+                    .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
                         log.error("Error Occured: {}", new String(response.getBody().readAllBytes()));
                         throw new ResourceNotFoundException("Could not create the employee");
                     }))
                     .body(new ParameterizedTypeReference<>() {
                     });
             log.debug("Successfully retrieved all the employees!");
-            log.trace("Retrieved employee list: {}" ,employeeDtoList.getData());
+            log.trace("Retrieved employee list: {}", employeeDtoList.getData());
             return employeeDtoList.getData();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -44,9 +44,9 @@ public class EmployeeClientImpl implements EmployeeClient {
     @Override
     public EmployeeDto getEmployeesById(Long id) {
         try {
-            Long empId = Long.valueOf(id);
+            Long empId = id;
             ApiResponse<EmployeeDto> employeeDtoList = restClient.get()
-                    .uri("/employees/{empId}",empId)
+                    .uri("/employees/{empId}", empId)
                     .retrieve()
                     .body(new ParameterizedTypeReference<ApiResponse<EmployeeDto>>() {
                     });
@@ -58,12 +58,12 @@ public class EmployeeClientImpl implements EmployeeClient {
 
     @Override
     public EmployeeDto createNewEmployee(EmployeeDto inputEmployee) {
-        try{
+        try {
             ApiResponse<EmployeeDto> employeeDto = restClient.post()
                     .uri("/employees")
                     .body(inputEmployee)
                     .retrieve()
-                    .onStatus(HttpStatusCode::is4xxClientError, ((request, response) ->{
+                    .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
                         System.out.println("Error Occured: " + new String(response.getBody().readAllBytes()));
                         throw new ResourceNotFoundException("Could not create the employee");
                     }))

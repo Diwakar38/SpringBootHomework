@@ -1,6 +1,6 @@
 package com.tutorial.SecurityApp.configurations;
 
-import com.tutorial.prod_ready_features.auth.AuditorAwareImpl;
+import com.tutorial.SecurityApp.auth.AuditorAwareImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
