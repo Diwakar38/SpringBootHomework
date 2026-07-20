@@ -15,7 +15,7 @@ public class JwtTests {
     @Test
     void test() {
         UserEntity userEntity = new UserEntity(4L, "diwakar@gamil.com", "1235", "diwakar");
-        String token = jwtService.generateToken(userEntity);
+        String token = jwtService.generateAccessToken(userEntity);
         System.out.println(token);
         Long id = jwtService.getUserIdFromToken(token);
         System.out.println("Id: " + id);

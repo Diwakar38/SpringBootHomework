@@ -1,9 +1,11 @@
 package com.tutorial.SecurityApp.services.impl;
 
 import com.tutorial.SecurityApp.dtos.LoginDto;
+import com.tutorial.SecurityApp.dtos.LoginResponseDto;
 import com.tutorial.SecurityApp.entities.SessionEntity;
 import com.tutorial.SecurityApp.entities.UserEntity;
 import com.tutorial.SecurityApp.repositories.SessionRepository;
+import com.tutorial.SecurityApp.services.UserService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,23 +24,20 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthService {
     private final AuthenticationManager authenticationManager;
-
     private final JwtServiceImpl jwtService;
-
+    private final UserService userService;
     private final SessionRepository sessionRepository;
 
-    public String login(LoginDto loginDto) {
+    public LoginResponseDto login(LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword())
         );
 
         UserEntity userEntity = (UserEntity) authentication.getPrincipal();
-        String token = jwtService.generateToken(userEntity);
-        SessionEntity sessionEntity = new SessionEntity(userEntity, token);
+        String accessToken = jwtService.generateAccessToken(userEntity);
+        String refreshToken = jwtService.generateRefreshToken(userEntity);
 
-        sessionRepository.save(sessionEntity);
-
-        return token;
+        return new LoginResponseDto(userEntity.getId(),accessToken,refreshToken);
     }
 
     public String logout(HttpServletRequest request) throws ExpiredJwtException {
@@ -50,5 +49,12 @@ public class AuthService {
         Optional<SessionEntity> currentLoggedInUser = sessionRepository.findById(cookie[0].getValue());
         sessionRepository.deleteById(currentLoggedInUser.get().getToken());
         return "Successfully Logged out";
+    }
+
+    public LoginResponseDto refreshToken(String refreshToken) {
+        Long userId = jwtService.getUserIdFromToken(refreshToken);
+        UserEntity user = userService.getUserById(userId);
+        String accessToken = jwtService.generateAccessToken(user);
+        return new LoginResponseDto(user.getId(),accessToken,refreshToken);
     }
 }
