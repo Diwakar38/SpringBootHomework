@@ -50,7 +50,7 @@ public class AuthController {
         refreshCookie.setHttpOnly(true);
         refreshCookie.setSecure("production".equals(deployEnv));
         response.addCookie(refreshCookie);
-        log.info("Tokens: {}", refreshCookie);
+        log.info("Tokens: {}", refreshCookie.toString());
 
         return ResponseEntity.ok(loginResponse);
     }

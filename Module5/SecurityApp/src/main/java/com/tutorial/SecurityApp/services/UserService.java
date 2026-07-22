@@ -8,5 +8,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public interface UserService extends UserDetailsService {
     UserEntity getUserById(Long userId);
 
+    UserEntity getUserByEmail(String email);
+
     UserDto signup(SignUpDto signUpDto);
+
+    UserEntity save(UserEntity newUser);
 }

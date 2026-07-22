@@ -5,6 +5,7 @@ import com.tutorial.SecurityApp.dtos.LoginResponseDto;
 import com.tutorial.SecurityApp.entities.SessionEntity;
 import com.tutorial.SecurityApp.entities.UserEntity;
 import com.tutorial.SecurityApp.repositories.SessionRepository;
+import com.tutorial.SecurityApp.services.SessionService;
 import com.tutorial.SecurityApp.services.UserService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.Cookie;
@@ -27,6 +28,7 @@ public class AuthService {
     private final JwtServiceImpl jwtService;
     private final UserService userService;
     private final SessionRepository sessionRepository;
+    private final SessionService sessionService;
 
     public LoginResponseDto login(LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(
@@ -36,6 +38,7 @@ public class AuthService {
         UserEntity userEntity = (UserEntity) authentication.getPrincipal();
         String accessToken = jwtService.generateAccessToken(userEntity);
         String refreshToken = jwtService.generateRefreshToken(userEntity);
+        sessionService.generateNewSession(userEntity,refreshToken);
 
         return new LoginResponseDto(userEntity.getId(),accessToken,refreshToken);
     }
@@ -46,13 +49,12 @@ public class AuthService {
         }
         Cookie[] cookie = request.getCookies();
         log.trace("Cookie: {}", cookie[0].getValue());
-        Optional<SessionEntity> currentLoggedInUser = sessionRepository.findById(cookie[0].getValue());
-        sessionRepository.deleteById(currentLoggedInUser.get().getToken());
         return "Successfully Logged out";
     }
 
     public LoginResponseDto refreshToken(String refreshToken) {
         Long userId = jwtService.getUserIdFromToken(refreshToken);
+        sessionService.validateSession(refreshToken);
         UserEntity user = userService.getUserById(userId);
         String accessToken = jwtService.generateAccessToken(user);
         return new LoginResponseDto(user.getId(),accessToken,refreshToken);

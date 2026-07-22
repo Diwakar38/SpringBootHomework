@@ -9,6 +9,7 @@ import com.tutorial.SecurityApp.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,6 +34,11 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(()-> new BadCredentialsException("User not found with username: " + username));
     }
 
+    public UserEntity getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElse(null);
+    }
+
     @Override
     public UserEntity getUserById(Long userId) {
         return userRepository.findById(userId)
@@ -48,6 +54,11 @@ public class UserServiceImpl implements UserService {
         newUserEntity.setPassword(passwordEncoder.encode(newUserEntity.getPassword()));
 
         return modelMapper.map(userRepository.save(newUserEntity), UserDto.class);
+    }
+
+    @Override
+    public UserEntity save(UserEntity newUser) {
+        return userRepository.save(newUser);
     }
 
 }

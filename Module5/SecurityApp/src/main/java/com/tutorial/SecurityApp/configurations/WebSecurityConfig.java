@@ -2,6 +2,7 @@ package com.tutorial.SecurityApp.configurations;
 
 import com.tutorial.SecurityApp.filters.JwtAuthFilter;
 import com.tutorial.SecurityApp.filters.LoggingFilter;
+import com.tutorial.SecurityApp.handlers.OAuth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,21 +24,26 @@ public class WebSecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
     private final LoggingFilter loggingFilter;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) {
         httpSecurity
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/posts", "/error", "/public/**", "/auth/**").permitAll()
+                        .requestMatchers("/posts", "/error", "/public/**", "/auth/**", "/home.html").permitAll()
 //                        .requestMatchers("/posts/**").hasAnyRole("ADMIN")
                         .anyRequest().authenticated())
                 .csrf(csrfConfig -> csrfConfig.disable())
                 .sessionManagement(sessionConfig -> sessionConfig
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .formLogin(Customizer.withDefaults())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(loggingFilter, JwtAuthFilter.class);
+                .oauth2Login(oauth2config -> oauth2config
+                        .failureUrl("/login?")
+                        .successHandler(oAuth2SuccessHandler)
+                );
+                //.formLogin(Customizer.withDefaults())
+                //.addFilterBefore(loggingFilter, JwtAuthFilter.class);
 
         return httpSecurity.build();
     }
