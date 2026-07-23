@@ -1,6 +1,7 @@
 package com.tutorial.SecurityApp.filters;
 
 import com.tutorial.SecurityApp.entities.UserEntity;
+import com.tutorial.SecurityApp.services.UserService;
 import com.tutorial.SecurityApp.services.impl.JwtServiceImpl;
 import com.tutorial.SecurityApp.services.impl.UserServiceImpl;
 import jakarta.servlet.FilterChain;
@@ -23,7 +24,8 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtServiceImpl jwtService;
-    private final UserServiceImpl userService;
+    private final UserService userService;
+
     @Autowired
     @Qualifier("handlerExceptionResolver")
     private final HandlerExceptionResolver handlerExceptionResolver;
@@ -42,7 +44,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserEntity userEntity = userService.getUserById(userId);
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                        new UsernamePasswordAuthenticationToken(userEntity, null, null);
+                        new UsernamePasswordAuthenticationToken(userEntity, null, userEntity.getAuthorities());
 
                 usernamePasswordAuthenticationToken.setDetails(
                         new WebAuthenticationDetailsSource().buildDetails(request)

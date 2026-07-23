@@ -26,9 +26,9 @@ public class JwtServiceImpl {
         return Jwts.builder()
                 .subject(userEntity.getId().toString())
                 .claim("email", userEntity.getEmail())
-                .claim("roles", Set.of("ADMIN", "USER"))
+                .claim("roles", userEntity.getRoles().toString())
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 10))
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 10 * 100))
                 .signWith(getSecretKey())
                 .compact();
     }

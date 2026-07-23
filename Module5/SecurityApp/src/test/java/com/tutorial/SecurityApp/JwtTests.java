@@ -1,10 +1,13 @@
 package com.tutorial.SecurityApp;
 
 import com.tutorial.SecurityApp.entities.UserEntity;
+import com.tutorial.SecurityApp.entities.enums.Role;
 import com.tutorial.SecurityApp.services.impl.JwtServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.Collections;
 
 @SpringBootTest
 public class JwtTests {
@@ -14,7 +17,7 @@ public class JwtTests {
 
     @Test
     void test() {
-        UserEntity userEntity = new UserEntity(4L, "diwakar@gamil.com", "1235", "diwakar");
+        UserEntity userEntity = new UserEntity(4L, "diwakar@gamil.com", "1235", "diwakar", Collections.singleton(Role.ADMIN));
         String token = jwtService.generateAccessToken(userEntity);
         System.out.println(token);
         Long id = jwtService.getUserIdFromToken(token);
