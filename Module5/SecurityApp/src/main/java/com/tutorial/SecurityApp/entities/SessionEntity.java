@@ -1,21 +1,27 @@
 package com.tutorial.SecurityApp.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
-@Entity
+import java.time.LocalDateTime;
+
+@Entity(name = "sessions")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class SessionEntity {
-
-    @OneToOne
-    private UserEntity userEntity;
-
     @Id
-    private String token;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String refreshToken;
+
+    @CreationTimestamp
+    private LocalDateTime lastUsedAt;
+
+    @ManyToOne
+    private UserEntity user;
 }
