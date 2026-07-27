@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: SecurityApp
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/SecurityApp}
+    username: ${DB_USER:diwakar}
+    password: ${DB_PW:diwakar}
+  security:
+    user:
+      name: diwakar
+      password: diwakar
+  main:
+    allow-bean-definition-overriding: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+#    defer-datasource-initialization: true
+
+logging:
+  level:
+    com:
+      zaxxer: INFO
+      tutorial: TRACE
+  pattern:
+    console: "%d [%level] %c{1.} [%t] %m%n"
+#  file:
+#    name: application.log
+
+server:
+  port: 8000
+
+Employee:
+  ServiceUrl: "http://localhost:8001"
+
+jwt:
+  secretKey: "skldjflskdjflksdjfklasjflksj13126dffasdfasf"
+
+deploy:
+  env: development

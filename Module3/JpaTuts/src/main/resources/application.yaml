@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: JpaTuts
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/JpaTuts}
+    username: ${DB_USER:diwakar}
+    password: ${DB_PW:diwakar}
+  sql:
+    init:
+      mode: always
+      data:
+        locations:
+          classpath: data.sql
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    defer-datasource-initialization: true
+
+server:
+  port: 8000
