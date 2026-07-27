@@ -7,6 +7,7 @@ import com.tutorial.module11.caching.exception.ResourceNotFoundException;
 import com.tutorial.module11.caching.mapper.EmployeeMapper;
 import com.tutorial.module11.caching.repository.EmployeeRepository;
 import com.tutorial.module11.caching.service.EmployeeService;
+import com.tutorial.module11.caching.service.SalaryAccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -14,6 +15,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -25,6 +27,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final EmployeeMapper employeeMapper;
     private final String CACHE_NAME = "employees";
+    private final SalaryAccountService salaryAccountService;
 
     @Override
     @Cacheable(cacheNames = CACHE_NAME)
@@ -45,9 +48,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     @CachePut(cacheNames = CACHE_NAME, key = "#result.id")
+    @Transactional
     public EmployeeResponse createEmployee(EmployeeRequest employeeRequest) {
         Employee employee = employeeRepository.save(employeeMapper.toEmployee(employeeRequest));
         log.info("Saved employee: " + employee.toString());
+        salaryAccountService.createAccount(employee);
         return employeeMapper.toEmployeeResponse(employee);
     }
 
