@@ -1,4 +1,4 @@
-INSERT INTO orders (order_status, price)
+INSERT INTO orders (order_status, total_price)
 VALUES
     ('PENDING', 69999.00),
     ('CONFIRMED', 129998.00),
